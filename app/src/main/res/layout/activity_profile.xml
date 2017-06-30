@@ -1,0 +1,46 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="touchin.aacplusdbtest.R"/>
+        <import type="android.view.View"/>
+        <!-- Это ViewModel для экрана, к которой будет все байндиться -->
+        <variable name="profileViewModel" type="touchin.aacplusdbtest.ProfileViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Текст с логином авторизованного пользователя.
+               Байндится логин, как текст из поля userLogin.
+               Байндится visibility к полю isUserLoggedIn, так как отображается элемент только если пользователь авторизован. -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{profileViewModel.userLogin}"
+            android:visibility="@{profileViewModel.isUserLoggedIn ? View.VISIBLE : View.GONE}"/>
+
+        <!-- Поле ввода логина.
+               Байндится введенный логин, как текст из поля inputLogin, этот байндинг двусторонний, то есть при изменении inputLogin во ViewModel будет меняться отображение на View и наоборот - при вводе пользователем другого текста он будет изменяться в поле inputLogin.
+                Байндится visibility к полю isUserLoggedIn, так как отображается элемент только если пользователь не авторизован. -->
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:addTextChangedListener="@{profileViewModel.inputLogin}"
+            android:text="@{profileViewModel.inputLogin}"
+            android:visibility="@{profileViewModel.isUserLoggedIn ? View.GONE : View.VISIBLE}"/>
+
+        <!-- Кнопка меняет текст в зависимости от того, авторизован ли пользователь.
+               Если пользователь авторизован, вызывает по нажатию метод logout,
+                если пользователь не авторизован - метод login -->
+        <!-- Кнопка войти/выйти.
+               Байндится текст к полю isUserLoggedIn, так как отображается текст "Выйти", если пользватель авторизован и текст "Войти" - если не авторизован.
+                Также настраивается вызов комманды по клику в зависимости от значения в поле isUserLoggedIn: вызывается команда logout или login в зависимости от того, авторизован ли пользователь. -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{profileViewModel.isUserLoggedIn ? R.string.logout : R.string.login}"
+            android:onClick="@{(v)-> profileViewModel.isUserLoggedIn.get() ? profileViewModel.logout() : profileViewModel.login()}"/>
+
+    </LinearLayout>
+</layout>
