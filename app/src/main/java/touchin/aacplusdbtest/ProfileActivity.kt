@@ -16,35 +16,32 @@
  *  limitations under the License.
  *
  */
-package touchin.aacplusdbtest;
+package touchin.aacplusdbtest
 
-import android.arch.lifecycle.LifecycleActivity;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
-import android.os.Bundle;
-
-import touchin.aacplusdbtest.databinding.ActivityProfileBinding;
+import android.arch.lifecycle.LifecycleActivity
+import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
+import android.os.Bundle
+import touchin.aacplusdbtest.databinding.ActivityProfileBinding
 
 // наследуем от LifecycleActivity, так как это может понадобиться для LiveData.
 // LiveData будет активироваться, когда эта активити будет в состоянии started.
-public class ProfileActivity extends LifecycleActivity {
-    private ActivityProfileBinding binding;
+class ProfileActivity : LifecycleActivity() {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    lateinit private var binding: ActivityProfileBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         // инициализируем байндинг
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
+        binding = DataBindingUtil.setContentView<ActivityProfileBinding>(this, R.layout.activity_profile)
         // устанавливаем ViewModel для байндинга
-        ProfileViewModel profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
-        binding.setProfileViewModel(profileViewModel);
+        binding.profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding.setProfileViewModel(null);
-        binding.executePendingBindings();
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.profileViewModel = null
+        binding.executePendingBindings()
     }
 
 }

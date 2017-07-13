@@ -23,7 +23,7 @@
         <!-- Поле ввода логина.
                Байндится введенный логин, как текст из поля inputLogin, этот байндинг двусторонний, то есть при изменении inputLogin во ViewModel будет меняться отображение на View и наоборот - при вводе пользователем другого текста он будет изменяться в поле inputLogin.
                 Байндится visibility к полю isUserLoggedIn, так как отображается элемент только если пользователь не авторизован. -->
-        <EditText
+        <touchin.aacplusdbtest.views.SafeEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:addTextChangedListener="@{profileViewModel.inputLogin}"
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{profileViewModel.isUserLoggedIn ? R.string.logout : R.string.login}"
-            android:onClick="@{(v)-> profileViewModel.isUserLoggedIn.get() ? profileViewModel.logout() : profileViewModel.login()}"/>
+            android:onClick="@{(v)-> profileViewModel.loginOrLogout()}"/>
 
     </LinearLayout>
 </layout>

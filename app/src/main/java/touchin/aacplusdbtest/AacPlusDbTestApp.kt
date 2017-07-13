@@ -16,20 +16,17 @@
  *  limitations under the License.
  *
  */
-package touchin.aacplusdbtest;
+package touchin.aacplusdbtest
 
-import android.app.Application;
+import android.app.Application
 
-public class AacPlusDbTestApp extends Application {
-    private ProfileRepository profileRepository;
+class AacPlusDbTestApp : Application() {
 
-    public ProfileRepository getProfileRepository() {
-        return profileRepository;
-    }
+    lateinit var profileRepository: ProfileRepository
+        private set
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        profileRepository = new ProfileRepository(this);
+    override fun onCreate() {
+        super.onCreate()
+        profileRepository = ProfileRepository(this)
     }
 }

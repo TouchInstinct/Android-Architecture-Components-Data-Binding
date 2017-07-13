@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 25
@@ -26,7 +28,9 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:25.3.1'
 
-    compile "android.arch.lifecycle:runtime:1.0.0-alpha3"
-    compile "android.arch.lifecycle:extensions:1.0.0-alpha3"
-    annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha3"
+    compile "android.arch.lifecycle:runtime:1.0.0-alpha4"
+    compile "android.arch.lifecycle:extensions:1.0.0-alpha4"
+    annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha4"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    kapt 'com.android.databinding:compiler:2.3.3'
 }

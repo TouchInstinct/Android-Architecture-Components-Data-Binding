@@ -16,30 +16,20 @@
  *  limitations under the License.
  *
  */
-package touchin.aacplusdbtest.utils;
+package touchin.aacplusdbtest.utils
 
 
-import android.databinding.ObservableField;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.databinding.ObservableField
+import android.text.Editable
+import android.text.TextWatcher
 
-public class TextField extends ObservableField<String> implements TextWatcher {
+class TextField : ObservableField<String>(), TextWatcher {
+    override fun beforeTextChanged(text: CharSequence, start: Int, count: Int, after: Int) = Unit
+    override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) = Unit
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        //do nothing
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        //do nothing
-    }
-
-    @Override
-    public void afterTextChanged(Editable text) {
-        if (!text.toString().equals(get())) {
-            set(text.toString());
+    override fun afterTextChanged(text: Editable) {
+        if (text.toString() != get()) {
+            set(text.toString())
         }
     }
-
 }
