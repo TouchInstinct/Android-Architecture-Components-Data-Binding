@@ -40,8 +40,10 @@ class ProfileActivity : LifecycleActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        // обнуляем поле profileViewModel
         binding.profileViewModel = null
+        // необходимо вручную вызвать обновление байндингов,
+        // так как автоматическое обновление не работает на этапе onDestroy
         binding.executePendingBindings()
     }
-
 }

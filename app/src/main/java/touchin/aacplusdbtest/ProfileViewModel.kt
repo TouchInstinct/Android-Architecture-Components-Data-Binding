@@ -28,23 +28,34 @@ import touchin.aacplusdbtest.utils.TextField
 
 class ProfileViewModel(application: Application) : AndroidViewModel(application) {
     private val profileRepository: ProfileRepository = (application as AacPlusDbTestApp).profileRepository
+    // класс Transformations — это класс-хэлпер для преобразования данных
+    // метод map, просто конвертирует данные из одного типа в другой - в данном случае из String? в boolean
+    private val isUserLoggedInLiveData = Transformations.map(profileRepository.loggedInUser) { login -> login != null }
 
     // представляет логин авторизованного пользователя или null
     val userLogin = LifecycleLiveDataField(profileRepository.loggedInUser)
     // представляет авторизован ли пользователь
-    val isUserLoggedInLiveData = Transformations.map(profileRepository.loggedInUser) { login -> login != null }
     val isUserLoggedIn = LifecycleLiveDataField(isUserLoggedInLiveData)
     // представляет логин, введенный пользователем с клавиатуры
+    // TextField - это ObservableField, реализующий интерфейс TextWatcher
+    //    это нужно, чтобы можно было байндиться к text и addTextChangedListener,
+    //    организовав таким образом двустронний байндинг.
+    // При вводе текста в EditText  изменяется ViewModel, при изменении ViewModel — изменяется в EditText.
     val inputLogin = TextField()
 
     fun loginOrLogout() {
+        // необходимо получить текущее состояние - авторизован пользователь или нет и решить, что делать
         isUserLoggedInLiveData.observeForever(object : Observer<Boolean> {
             override fun onChanged(loggedIn: Boolean?) {
                 if (loggedIn!!) {
                     profileRepository.logout()
                 } else if (inputLogin.get() != null) {
+                    // вызываем логин только если пользователь что-то ввел в поле ввода
                     profileRepository.login(inputLogin.get())
+                } else {
+                    // по идее, тут можно отобразить ошибку "Введите логин"
                 }
+                // при выполнении команды приходится отписываться вручную
                 isUserLoggedInLiveData.removeObserver(this)
             }
         })

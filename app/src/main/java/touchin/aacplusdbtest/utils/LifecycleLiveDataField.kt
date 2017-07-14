@@ -38,6 +38,7 @@ class LifecycleLiveDataField<T>(val source: LiveData<T?>) : ObservableField<T>()
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback) {
         super.addOnPropertyChangedCallback(callback)
         try {
+            // немножко рефлексии, по-другому никак
             val callbackListenerField = callback.javaClass.getDeclaredField("mListener")
             callbackListenerField.setAccessible(true)
             val callbackListener = callbackListenerField.get(callback) as WeakReference<ViewDataBinding>

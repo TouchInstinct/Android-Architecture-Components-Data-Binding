@@ -25,6 +25,8 @@ import android.content.Context
 class ProfileRepository(context: Context) {
     private val loginKey = "login"
     private val preferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+    // LiveData, на которую можно подписаться
+    // и получать обновления логина пользователя
     private val innerLoggedInUser = LoggedInUserLiveData()
 
     val loggedInUser: LiveData<String?>
@@ -32,16 +34,22 @@ class ProfileRepository(context: Context) {
 
     fun login(login: String) {
         preferences.edit().putString(loginKey, login).apply()
-        innerLoggedInUser.update(login)
+        notifyAboutUpdate(login)
     }
 
     fun logout() {
         preferences.edit().putString(loginKey, null).apply()
-        innerLoggedInUser.update(null)
+        notifyAboutUpdate(null)
+    }
+
+    private fun notifyAboutUpdate(login: String?) {
+        innerLoggedInUser.update(login)
     }
 
     private inner class LoggedInUserLiveData : LiveData<String?>() {
 
+        // так лучше не делать в конструкторе, а высчитывать текщее значение асинхронно
+        // при первом вызове колбека onActive
         init {
             value = preferences.getString(loginKey, null)
         }
@@ -52,6 +60,5 @@ class ProfileRepository(context: Context) {
         fun update(login: String?) {
             postValue(login)
         }
-
     }
 }

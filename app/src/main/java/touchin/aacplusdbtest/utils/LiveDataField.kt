@@ -26,7 +26,7 @@ import android.databinding.ObservableField
 import java.util.concurrent.atomic.AtomicInteger
 
 // наследуем от ObservableField
-// имплементируем Observer (интерфейс из-подписчик для LiveData) чтобы синхронизировать значения LiveData и ObservableField
+// имплементируем Observer (подписчик для LiveData) чтобы синхронизировать значения LiveData и ObservableField
 class LiveDataField<T>(val source: LiveData<T?>) : ObservableField<T>(), Observer<T?> {
     // отслеживаем количество подписчиков на этот ObservableField
     private var observersCount: AtomicInteger = AtomicInteger(0)
